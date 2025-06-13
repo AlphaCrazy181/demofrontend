@@ -154,6 +154,8 @@ export const SpeechProvider = ({ children }) => {
       console.log("TTS Request: Sending voiceId", currentVoiceId)
       const data = await fetch(`${backendUrl}/tts`, {
         method: "POST",
+        mode: "cors",              // tells the browser this is a cross-origin request
+  credentials: "include",    // if you ever need cookies/auth; otherwise you can omit
         headers: {
           "Content-Type": "application/json",
         },
