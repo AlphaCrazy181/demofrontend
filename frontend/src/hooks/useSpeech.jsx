@@ -50,12 +50,13 @@ export const SpeechProvider = ({ children }) => {
         // LOG: What voiceId is being sent in STS request
         console.log("STS Request: Sending voiceId", currentVoiceId)
         const data = await fetch(`${backendUrl}/sts`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ audio: base64Audio, emotion: currentEmotion, voiceId: currentVoiceId }), // Pass voiceId
-        })
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  credentials: "include",
+  body: JSON.stringify({ audio: base64Audio, emotion: currentEmotion, voiceId: currentVoiceId }),
+});
         const response = await data.json()
 
         // Update the last user message with actual transcribed text and analysis
@@ -153,12 +154,14 @@ export const SpeechProvider = ({ children }) => {
       // LOG: What voiceId is being sent in TTS request
       console.log("TTS Request: Sending voiceId", currentVoiceId)
       const data = await fetch(`${backendUrl}/tts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: userText, emotion: currentEmotion, voiceId: currentVoiceId }), // Pass voiceId
-      })
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    // Add any other required headers
+  },
+  credentials: "include", // Important for CORS with credentials
+  body: JSON.stringify({ message: userText, emotion: currentEmotion, voiceId: currentVoiceId }),
+});
       const response = await data.json()
 
       setCurrentMessage(response.messages[0])
